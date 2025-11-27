@@ -170,9 +170,15 @@ const PreTest = () => {
           <p className="text-3xl text-green-700 mb-6">Ready to practice {activeWordList.name}?</p>
           <button
             onClick={startTest}
-            className="bg-green-500 hover:bg-green-600 text-white font-bold py-6 px-12 rounded-xl shadow-lg text-4xl transition duration-300 ease-in-out transform hover:scale-105"
+            className="bg-green-500 hover:bg-green-600 text-white font-bold py-6 px-12 rounded-xl shadow-lg text-4xl transition duration-300 ease-in-out transform hover:scale-105 mb-8"
           >
             Start Test
+          </button>
+          <button
+            onClick={() => navigate('/')}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-xl transition duration-300 ease-in-out mt-12"
+          >
+            Go Home
           </button>
         </div>
       )}
