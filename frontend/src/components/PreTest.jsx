@@ -56,8 +56,8 @@ const PreTest = () => {
     setTestFinished(false);
   };
 
-  const speakWord = (word) => {
-    speak(word);
+  const speakWord = (wordObject) => {
+    speak(wordObject.text);
   };
 
   const handleInputChange = (e) => {
@@ -69,7 +69,7 @@ const PreTest = () => {
     e.preventDefault();
     if (!userInput.trim()) return;
 
-    const currentWord = activeWordList.words[currentWordIndex];
+    const currentWord = activeWordList.words[currentWordIndex].text;
     const isCorrect = userInput.trim().toLowerCase() === currentWord.toLowerCase();
 
     if (isCorrect) {
@@ -113,7 +113,7 @@ const PreTest = () => {
     if (feedback === 'correct') {
       return <p className="text-green-600 text-3xl font-bold mt-4 animate-bounce">🎉 Correct! 🎉</p>;
     } else if (feedback === 'incorrect') {
-      const correctWord = activeWordList.words[currentWordIndex];
+      const correctWord = activeWordList.words[currentWordIndex].text;
       return <p className="text-red-600 text-3xl font-bold mt-4">Incorrect. The word was: {correctWord}</p>;
     }
     return null;
