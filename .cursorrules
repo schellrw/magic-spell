@@ -1,0 +1,87 @@
+# Magic Spell - Spelling Practice App for Kids
+
+## Project Overview
+A React web app to help kids practice weekly spelling words through interactive exercises and tests. Parents can upload word lists, and kids can practice with games and take pre-tests with AI voice pronunciation.
+
+## Tech Stack
+- **Frontend**: React + Vite
+- **Styling**: Tailwind CSS (utility classes only)
+- **Backend/Database**: Supabase (PostgreSQL + Storage + Auth)
+- **Hosting**: Netlify
+- **Text-to-Speech**: Web Speech API (browser native)
+
+## Code Style & Conventions
+- Use functional components with hooks (no class components)
+- Use arrow functions for components and handlers
+- Keep components under 300 lines - extract if larger
+- Use destructuring for props and state
+- Prefer `const` over `let`, avoid `var`
+- Use template literals for string concatenation
+- Add comments for complex logic only, keep code self-documenting
+
+## File Structure
+```
+frontend/
+├── src/
+│   ├── components/     # React components
+│   ├── hooks/          # Custom React hooks
+│   ├── services/       # API/Supabase services
+│   ├── App.jsx         # Main app with routing
+│   └── main.jsx        # Entry point
+```
+
+## Supabase Integration
+- All database operations go through `services/supabase.js`
+- Never expose Supabase keys in client code
+- Use the pre-built service functions: `wordListService`, `testResultService`, `feedbackService`
+- Handle errors gracefully with try/catch
+
+## Component Guidelines
+- Components should be single-responsibility
+- Parent components manage state, children receive props
+- Use custom hooks for reusable logic (like `useSpeech`)
+- Keep UI feedback clear for kids (big buttons, clear messages)
+
+## Styling Guidelines
+- Use Tailwind utility classes only (no custom CSS unless necessary)
+- Design for kids: large text, bright colors, clear buttons
+- Mobile-friendly (kids might use tablets)
+- Use semantic colors: green for correct, red/yellow for incorrect, blue for actions
+
+## Kid-Friendly UX Principles
+- Large, clickable targets (buttons should be big)
+- Clear audio feedback (speak words clearly and slowly)
+- Immediate visual feedback on actions
+- Positive reinforcement (celebrate successes)
+- Simple navigation (minimal clicks to get to practice/test)
+- Forgiving error handling (let kids try again easily)
+
+## Parent-Friendly Admin Principles
+- Quick word list entry (paste from anywhere)
+- Clear active/inactive states
+- Easy to set up weekly words
+- Progress tracking visibility
+
+## Database Schema
+**word_lists**: id, created_at, name, words (jsonb), is_active
+**test_results**: id, created_at, word_list_id, score, total, details (jsonb)
+**Storage Buckets**: voice-clips, feedback-images
+
+## Testing Approach
+- Manual testing in browser
+- Test with actual kids to validate UX
+- Check speech synthesis across browsers (Chrome/Safari/Firefox)
+- Verify mobile responsiveness
+
+## Common Patterns
+
+### Supabase Query
+```javascript
+const { data, error } = await supabase
+  .from('table_name')
+  .select('*')
+  .eq('field', value);
+
+if (error) throw error;
+return data;
+```
