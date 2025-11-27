@@ -116,7 +116,7 @@ const WordListManager = () => {
               <li key={list.id} className="flex items-center justify-between bg-purple-50 p-4 rounded-lg shadow-sm">
                 <div>
                   <p className="text-xl font-semibold text-purple-800">{list.name}</p>
-                  <p className="text-gray-600 text-md">Words: {list.words.join(', ')}</p>
+                  <p className="text-gray-600 text-md">Words: {list.words.map(word => word.text).join(', ')}</p>
                   <p className={`text-md font-medium ${list.is_active ? 'text-green-600' : 'text-red-600'}`}>
                     Status: {list.is_active ? 'Active' : 'Inactive'}
                   </p>
