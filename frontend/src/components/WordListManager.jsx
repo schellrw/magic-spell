@@ -57,10 +57,37 @@ const WordListManager = () => {
   const handleSetStatus = async (id, currentStatus) => {
     setError(null);
     try {
-      // Deactivate all other lists first, then activate the target list
-      await wordListService.setActive(id);
-      await fetchWordLists(); // Refresh the list
-      alert(`Word list ${!currentStatus ? 'activated' : 'deactivated'} successfully!`);
+      if (currentStatus) {
+        // If the current list is active and they try to deactivate,
+        // we should only allow it if there's another list to activate, or warn them.
+        // For now, given the setActive implementation, we'll prevent deactivation
+        // if it's the only active list.
+        const activeLists = wordLists.filter(list => list.is_active);
+        if (activeLists.length === 1 && activeLists[0].id === id) {
+          alert('There must always be at least one active word list. Please activate another list before deactivating this one.');
+          return;
+        }
+        // If there are other active lists, or this isn't the only one, we can proceed to deactivate.
+        // However, the current setActive method always activates a given ID.
+        // So, to 'deactivate' a list, the user must activate a *different* list.
+        // The button text 'Deactivate' is misleading if it doesn't offer to activate another.
+        // Let's re-think the UX here based on the backend function.
+
+        // The current `setActive` in supabase.jsx always sets one list to active and others to inactive.
+        // If the user clicks 'Deactivate' on an active list, it means they want *another* list to be active,
+        // or no list to be active. The latter is not supported by `setActive`.
+        // So, the 'Deactivate' button should effectively mean 'Make another list active'.
+        // For now, based on the prompt, the user wants to switch active lists.
+        // We'll update the alert message to reflect what actually happens.
+        alert('To deactivate this list, please activate another list instead.');
+        return;
+
+      } else {
+        // If the current list is inactive, activate it.
+        await wordListService.setActive(id);
+        await fetchWordLists(); // Refresh the list
+        alert('Word list activated successfully!');
+      }
     } catch (err) {
       setError('Failed to update word list status.');
       console.error('Error updating word list status:', err);
