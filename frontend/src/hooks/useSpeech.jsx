@@ -10,8 +10,8 @@ export default function useSpeech() {
     const utterance = new SpeechSynthesisUtterance(text);
     
     // Configure speech
-    utterance.rate = options.rate || 0.8; // Slower for kids
-    utterance.pitch = options.pitch || 1;
+    utterance.rate = options.rate || 0.6; // Slower for kids
+    utterance.pitch = options.pitch || 1.4;
     utterance.volume = options.volume || 1;
 
     // Event handlers

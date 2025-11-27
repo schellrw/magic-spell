@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { wordListService, testResultService } from '../services/supabase';
 import useSpeech from '../hooks/useSpeech';
@@ -21,6 +21,10 @@ const PreTest = () => {
     fetchActiveWordList();
   }, []);
 
+  const speakWord = useCallback((wordObject) => {
+    speak(wordObject.text);
+  }, [speak]);
+
   useEffect(() => {
     if (testStarted && activeWordList && activeWordList.words.length > 0 && currentWordIndex < activeWordList.words.length) {
       speakWord(activeWordList.words[currentWordIndex]);
@@ -28,7 +32,7 @@ const PreTest = () => {
         inputRef.current.focus();
       }
     }
-  }, [testStarted, currentWordIndex, activeWordList]);
+  }, [testStarted, currentWordIndex, activeWordList, speakWord]);
 
   const fetchActiveWordList = async () => {
     try {
@@ -54,10 +58,6 @@ const PreTest = () => {
     setFeedback('');
     setUserInput('');
     setTestFinished(false);
-  };
-
-  const speakWord = (wordObject) => {
-    speak(wordObject.text);
   };
 
   const handleInputChange = (e) => {
