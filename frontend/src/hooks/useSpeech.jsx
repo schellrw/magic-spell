@@ -1,7 +1,6 @@
-// frontend/src/hooks/useSpeech.js
 import { useState, useCallback } from 'react';
 
-export function useSpeech() {
+export default function useSpeech() {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   const speak = useCallback((text, options = {}) => {
