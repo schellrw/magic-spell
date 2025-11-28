@@ -87,30 +87,52 @@ export const wordListService = {
 // Test Results Operations
 export const testResultService = {
   // Save test result
-  async create(wordListId, score, total, details) {
-    const { data, error } = await supabase
+  async create(wordListIds, score, total, details) {
+    // First, insert the test result itself
+    const { data: testResultData, error: testResultError } = await supabase
       .from('test_results')
       .insert([
         {
-          word_list_id: wordListId,
           score,
           total,
           details
         }
       ])
-      .select()
+      .select('id')
       .single();
-    
-    if (error) throw error;
-    return data;
+
+    if (testResultError) throw testResultError;
+
+    const testResultId = testResultData.id;
+
+    // Then, insert entries into the linking table for each wordListId
+    const testWordListEntries = wordListIds.map(wordListId => ({
+      test_result_id: testResultId,
+      word_list_id: wordListId
+    }));
+
+    const { error: linkingError } = await supabase
+      .from('test_word_lists')
+      .insert(testWordListEntries);
+
+    if (linkingError) throw linkingError;
+
+    return testResultData; // Return the created test result data
   },
 
   // Get all results for a word list
   async getByWordList(wordListId) {
     const { data, error } = await supabase
       .from('test_results')
-      .select('*')
-      .eq('word_list_id', wordListId)
+      .select(`
+        id,
+        created_at,
+        score,
+        total,
+        details,
+        test_word_lists(word_list_id)
+      `)
+      .filter('test_word_lists.word_list_id', 'eq', wordListId)
       .order('created_at', { ascending: false });
     
     if (error) throw error;
