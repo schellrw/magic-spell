@@ -24,7 +24,19 @@ export const wordListService = {
       .from('word_lists')
       .select('*')
       .eq('is_active', true)
-      .single();
+      .limit(1); // Limit to 1 for backward compatibility, but ideally this should be replaced
+    
+    if (error) throw error;
+    return data[0] || null; // Return the first active list or null if none
+  },
+
+  // Get all active word lists
+  async getActives() {
+    const { data, error } = await supabase
+      .from('word_lists')
+      .select('*')
+      .eq('is_active', true)
+      .order('created_at', { ascending: false });
     
     if (error) throw error;
     return data;
@@ -48,18 +60,11 @@ export const wordListService = {
     return data;
   },
 
-  // Set active word list (and deactivate others)
-  async setActive(id) {
-    // First, deactivate all
-    await supabase
-      .from('word_lists')
-      .update({ is_active: false })
-      .neq('id', '00000000-0000-0000-0000-000000000000'); // Update all
-    
-    // Then activate the selected one
+  // Toggle active status for a single word list
+  async toggleActive(id, isActive) {
     const { data, error } = await supabase
       .from('word_lists')
-      .update({ is_active: true })
+      .update({ is_active: isActive })
       .eq('id', id)
       .select()
       .single();

@@ -54,40 +54,11 @@ const WordListManager = () => {
     }
   };
 
-  const handleSetStatus = async (id, currentStatus) => {
+  const handleToggleActive = async (id, currentStatus) => {
     setError(null);
     try {
-      if (currentStatus) {
-        // If the current list is active and they try to deactivate,
-        // we should only allow it if there's another list to activate, or warn them.
-        // For now, given the setActive implementation, we'll prevent deactivation
-        // if it's the only active list.
-        const activeLists = wordLists.filter(list => list.is_active);
-        if (activeLists.length === 1 && activeLists[0].id === id) {
-          alert('There must always be at least one active word list. Please activate another list before deactivating this one.');
-          return;
-        }
-        // If there are other active lists, or this isn't the only one, we can proceed to deactivate.
-        // However, the current setActive method always activates a given ID.
-        // So, to 'deactivate' a list, the user must activate a *different* list.
-        // The button text 'Deactivate' is misleading if it doesn't offer to activate another.
-        // Let's re-think the UX here based on the backend function.
-
-        // The current `setActive` in supabase.jsx always sets one list to active and others to inactive.
-        // If the user clicks 'Deactivate' on an active list, it means they want *another* list to be active,
-        // or no list to be active. The latter is not supported by `setActive`.
-        // So, the 'Deactivate' button should effectively mean 'Make another list active'.
-        // For now, based on the prompt, the user wants to switch active lists.
-        // We'll update the alert message to reflect what actually happens.
-        alert('To deactivate this list, please activate another list instead.');
-        return;
-
-      } else {
-        // If the current list is inactive, activate it.
-        await wordListService.setActive(id);
-        await fetchWordLists(); // Refresh the list
-        alert('Word list activated successfully!');
-      }
+      await wordListService.toggleActive(id, !currentStatus);
+      await fetchWordLists(); // Refresh the list
     } catch (err) {
       setError('Failed to update word list status.');
       console.error('Error updating word list status:', err);
@@ -148,14 +119,17 @@ const WordListManager = () => {
                     Status: {list.is_active ? 'Active' : 'Inactive'}
                   </p>
                 </div>
-                <button
-                  onClick={() => handleSetStatus(list.id, list.is_active)}
-                  className={`py-2 px-4 rounded-lg font-bold text-lg transition duration-300 ease-in-out ${
-                    list.is_active ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white'
-                  }`}
-                >
-                  {list.is_active ? 'Deactivate' : 'Activate'}
-                </button>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value=""
+                    className="sr-only peer"
+                    checked={list.is_active}
+                    onChange={() => handleToggleActive(list.id, list.is_active)}
+                  />
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                  <span className="ml-3 text-lg font-medium text-gray-900 dark:text-gray-300">{list.is_active ? 'Active' : 'Inactive'}</span>
+                </label>
               </li>
             ))}
           </ul>

@@ -16,9 +16,10 @@ const PreTest = () => {
   const { speak } = useSpeech();
   const navigate = useNavigate();
   const inputRef = useRef(null);
+  const [shuffledWords, setShuffledWords] = useState([]);
 
   useEffect(() => {
-    fetchActiveWordList();
+    fetchActiveWordLists();
   }, []);
 
   const speakWord = useCallback((wordObject) => {
@@ -26,26 +27,38 @@ const PreTest = () => {
   }, [speak]);
 
   useEffect(() => {
-    if (testStarted && activeWordList && activeWordList.words.length > 0 && currentWordIndex < activeWordList.words.length) {
-      speakWord(activeWordList.words[currentWordIndex]);
+    if (testStarted && shuffledWords.length > 0 && currentWordIndex < shuffledWords.length) {
+      speakWord(shuffledWords[currentWordIndex]);
       if (inputRef.current) {
         inputRef.current.focus();
       }
     }
-  }, [testStarted, currentWordIndex, activeWordList, speakWord]);
+  }, [testStarted, currentWordIndex, shuffledWords, speakWord]);
 
-  const fetchActiveWordList = async () => {
+  const fetchActiveWordLists = async () => {
     try {
       setLoading(true);
-      const data = await wordListService.getActive();
-      if (data) {
-        setActiveWordList(data);
+      const data = await wordListService.getActives();
+      if (data && data.length > 0) {
+        setActiveWordList(data); // Store all active lists
+        // Combine all words from active lists and shuffle them
+        let allWords = [];
+        data.forEach(list => {
+          allWords = allWords.concat(list.words.map(word => ({ ...word, wordListId: list.id })));
+        });
+        // Fisher-Yates shuffle algorithm
+        for (let i = allWords.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [allWords[i], allWords[j]] = [allWords[j], allWords[i]];
+        }
+        setShuffledWords(allWords);
+
       } else {
-        setError('No active word list found. Please activate one from the Manage Words section.');
+        setError('No active word lists found. Please activate one or more from the Manage Words section.');
       }
     } catch (err) {
-      setError('Failed to fetch active word list.');
-      console.error('Error fetching active word list:', err);
+      setError('Failed to fetch active word lists.');
+      console.error('Error fetching active word lists:', err);
     } finally {
       setLoading(false);
     }
@@ -69,7 +82,7 @@ const PreTest = () => {
     e.preventDefault();
     if (!userInput.trim()) return;
 
-    const currentWord = activeWordList.words[currentWordIndex].text;
+    const currentWord = shuffledWords[currentWordIndex].text;
     const isCorrect = userInput.trim().toLowerCase() === currentWord.toLowerCase();
 
     if (isCorrect) {
@@ -84,7 +97,7 @@ const PreTest = () => {
     // Wait a bit before moving to the next word or finishing
     setTimeout(() => {
       setUserInput('');
-      if (currentWordIndex < activeWordList.words.length - 1) {
+      if (currentWordIndex < shuffledWords.length - 1) {
         setCurrentWordIndex((prevIndex) => prevIndex + 1);
         setFeedback('');
       } else {
@@ -97,10 +110,11 @@ const PreTest = () => {
     setTestFinished(true);
     setTestStarted(false);
     try {
+      const wordListIds = activeWordList.map(list => list.id);
       await testResultService.create(
-        activeWordList.id,
+        wordListIds, // Pass an array of word list IDs
         score,
-        activeWordList.words.length,
+        shuffledWords.length,
         { /* You can add more detailed results here later */ }
       );
       console.log('Test results saved!');
@@ -113,7 +127,7 @@ const PreTest = () => {
     if (feedback === 'correct') {
       return <p className="text-green-600 text-3xl font-bold mt-4 animate-bounce">🎉 Correct! 🎉</p>;
     } else if (feedback === 'incorrect') {
-      const correctWord = activeWordList.words[currentWordIndex].text;
+      const correctWord = shuffledWords[currentWordIndex].text;
       return <p className="text-red-600 text-3xl font-bold mt-4">Incorrect. The word was: {correctWord}</p>;
     }
     return null;
@@ -141,10 +155,10 @@ const PreTest = () => {
     );
   }
 
-  if (!activeWordList) {
+  if (!activeWordList || activeWordList.length === 0) {
     return (
       <div className="min-h-screen bg-red-100 p-8 flex flex-col items-center justify-center">
-        <p className="text-red-700 text-3xl text-center mb-8">No active word list found. Please go to "Manage Words" to activate one.</p>
+        <p className="text-red-700 text-3xl text-center mb-8">No active word lists found. Please go to "Manage Words" to activate one.</p>
         <button
           onClick={() => navigate('/manage')}
           className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-4 px-8 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105"
@@ -167,7 +181,8 @@ const PreTest = () => {
 
       {!testStarted && !testFinished && (
         <div className="text-center">
-          <p className="text-3xl text-green-700 mb-6">Ready to practice {activeWordList.name}?</p>
+          <p className="text-3xl text-green-700 mb-6">Ready to practice?</p>
+          <p className="text-2xl text-green-700 mb-6">Active lists: {activeWordList.map(list => list.name).join(', ')}</p>
           <button
             onClick={startTest}
             className="bg-green-500 hover:bg-green-600 text-white font-bold py-6 px-12 rounded-xl shadow-lg text-4xl transition duration-300 ease-in-out transform hover:scale-105 mb-8"
@@ -185,9 +200,9 @@ const PreTest = () => {
 
       {testStarted && !testFinished && (
         <div className="flex flex-col items-center">
-          <p className="text-4xl text-green-700 mb-6">Word {currentWordIndex + 1} of {activeWordList.words.length}</p>
+          <p className="text-4xl text-green-700 mb-6">Word {currentWordIndex + 1} of {shuffledWords.length}</p>
           <button
-            onClick={() => speakWord(activeWordList.words[currentWordIndex])}
+            onClick={() => speakWord(shuffledWords[currentWordIndex])}
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-lg shadow-md text-3xl mb-8 transition duration-300 ease-in-out transform hover:scale-105"
           >
             🔊 Hear Word
@@ -218,7 +233,7 @@ const PreTest = () => {
       {testFinished && (
         <div className="text-center">
           <h2 className="text-5xl font-bold text-green-800 mb-6">Test Complete!</h2>
-          <p className="text-4xl text-green-700 mb-8">You scored {score} out of {activeWordList.words.length}!</p>
+          <p className="text-4xl text-green-700 mb-8">You scored {score} out of {shuffledWords.length}!</p>
           <button
             onClick={startTest}
             className="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105 mb-4"
