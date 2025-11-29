@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -20,6 +24,7 @@ a {
 }
 a:hover {
   color: #535bf2;
+  cursor: url('/magic-wand-cursor.svg') 12 12, pointer;
 }
 
 body {
@@ -28,6 +33,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  cursor: url('/magic-wand-cursor.svg') 12 12, auto; /* 12 12 sets the hotspot to the center of a 24x24 icon */
 }
 
 h1 {
@@ -43,7 +49,7 @@ button {
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
-  cursor: pointer;
+  cursor: url('/magic-wand-cursor.svg') 12 12, pointer;
   transition: border-color 0.25s;
 }
 button:hover {
@@ -52,6 +58,47 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+@keyframes sparkle-fade {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50% { transform: scale(1) rotate(180deg); opacity: 1; }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+.sparkle-effect {
+  animation: sparkle-fade var(--animation-duration, 1s) ease-out forwards;
+}
+
+@keyframes sparkle-burst {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(1); opacity: 0; }
+}
+
+.sparkle-burst-effect {
+  animation: sparkle-burst var(--animation-duration, 1s) ease-out forwards;
+}
+
+@keyframes flubbed-trick {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  25% { transform: scale(1.2) rotate(15deg); opacity: 0.8; background-color: #fca5a5; } /* light red */
+  50% { transform: scale(0.8) rotate(-15deg); opacity: 0.6; background-color: #f87171; } /* red */
+  75% { transform: scale(1.1) rotate(10deg); opacity: 0.4; background-color: #ef4444; } /* darker red */
+  100% { transform: scale(0) rotate(0deg); opacity: 0; }
+}
+
+.flubbed-trick-animation {
+  animation: flubbed-trick var(--animation-duration, 1s) ease-in-out forwards;
+}
+
+@keyframes fade-out {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-20px); }
+}
+
+.animate-fade-out {
+  animation: fade-out var(--animation-duration, 1s) ease-out forwards;
 }
 
 @media (prefers-color-scheme: light) {

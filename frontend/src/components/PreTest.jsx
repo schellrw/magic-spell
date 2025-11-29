@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { wordListService, testResultService } from '../services/supabase';
 import useSpeech from '../hooks/useSpeech';
+import MagicButton from './MagicButton';
+import SparkleEffect from './SparkleEffect';
+import FlubbedTrickEffect from './FlubbedTrickEffect';
 
 const PreTest = () => {
   const [activeWordList, setActiveWordList] = useState(null);
@@ -125,10 +128,20 @@ const PreTest = () => {
 
   const renderFeedback = () => {
     if (feedback === 'correct') {
-      return <p className="text-green-600 text-3xl font-bold mt-4 animate-bounce">🎉 Correct! 🎉</p>;
+      return (
+        <div className="relative">
+          <p className="text-green-600 text-3xl font-bold mt-4 animate-bounce">🎉 Correct! 🎉</p>
+          <SparkleEffect />
+        </div>
+      );
     } else if (feedback === 'incorrect') {
       const correctWord = shuffledWords[currentWordIndex].text;
-      return <p className="text-red-600 text-3xl font-bold mt-4">Incorrect. The word was: {correctWord}</p>;
+      return (
+        <div className="relative">
+          <p className="text-red-600 text-3xl font-bold mt-4">Incorrect. The word was: {correctWord}</p>
+          <FlubbedTrickEffect />
+        </div>
+      );
     }
     return null;
   };
@@ -139,18 +152,18 @@ const PreTest = () => {
     return (
       <div className="min-h-screen bg-red-100 p-8 flex flex-col items-center justify-center">
         <p className="text-red-700 text-3xl text-center mb-8">Error: {error}</p>
-        <button
+        <MagicButton
           onClick={() => navigate('/manage')}
-          className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-4 px-8 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105"
+          className="text-2xl mb-8"
         >
           Go to Manage Words
-        </button>
-        <button
+        </MagicButton>
+        <MagicButton
           onClick={() => navigate('/')}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-lg text-2xl mt-4 transition duration-300 ease-in-out transform hover:scale-105"
+          className="text-2xl mt-4"
         >
           Go Home
-        </button>
+        </MagicButton>
       </div>
     );
   }
@@ -159,18 +172,18 @@ const PreTest = () => {
     return (
       <div className="min-h-screen bg-red-100 p-8 flex flex-col items-center justify-center">
         <p className="text-red-700 text-3xl text-center mb-8">No active word lists found. Please go to "Manage Words" to activate one.</p>
-        <button
+        <MagicButton
           onClick={() => navigate('/manage')}
-          className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-4 px-8 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105"
+          className="text-2xl mb-8"
         >
           Go to Manage Words
-        </button>
-        <button
+        </MagicButton>
+        <MagicButton
           onClick={() => navigate('/')}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-lg text-2xl mt-4 transition duration-300 ease-in-out transform hover:scale-105"
+          className="text-2xl mt-4"
         >
           Go Home
-        </button>
+        </MagicButton>
       </div>
     );
   }
@@ -183,30 +196,30 @@ const PreTest = () => {
         <div className="text-center">
           <p className="text-3xl text-green-700 mb-6">Ready to practice?</p>
           <p className="text-2xl text-green-700 mb-6">Active lists: {activeWordList.map(list => list.name).join(', ')}</p>
-          <button
+          <MagicButton
             onClick={startTest}
-            className="bg-green-500 hover:bg-green-600 text-white font-bold py-6 px-12 rounded-xl shadow-lg text-4xl transition duration-300 ease-in-out transform hover:scale-105 mb-8"
+            className="text-4xl mb-8"
           >
             Start Test
-          </button>
-          <button
+          </MagicButton>
+          <MagicButton
             onClick={() => navigate('/')}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-xl transition duration-300 ease-in-out mt-12"
+            className="text-xl mt-12"
           >
             Go Home
-          </button>
+          </MagicButton>
         </div>
       )}
 
       {testStarted && !testFinished && (
         <div className="flex flex-col items-center">
           <p className="text-4xl text-green-700 mb-6">Word {currentWordIndex + 1} of {shuffledWords.length}</p>
-          <button
+          <MagicButton
             onClick={() => speakWord(shuffledWords[currentWordIndex])}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-lg shadow-md text-3xl mb-8 transition duration-300 ease-in-out transform hover:scale-105"
+            className="text-3xl mb-8"
           >
             🔊 Hear Word
-          </button>
+          </MagicButton>
           <form onSubmit={handleSubmitWord} className="flex flex-col items-center">
             <input
               type="text"
@@ -220,12 +233,12 @@ const PreTest = () => {
               spellCheck="false"
             />
             {renderFeedback()}
-            <button
+            <MagicButton
               type="submit"
-              className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-4 px-12 rounded-lg shadow-lg text-3xl mt-8 transition duration-300 ease-in-out transform hover:scale-105"
+              className="text-3xl mt-8"
             >
               Check Answer
-            </button>
+            </MagicButton>
           </form>
         </div>
       )}

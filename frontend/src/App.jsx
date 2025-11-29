@@ -2,15 +2,19 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import WordListManager from './components/WordListManager';
 import PreTest from './components/PreTest';
+import Stars from './components/Stars';
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/manage" element={<WordListManager />} />
-        <Route path="/test" element={<PreTest />} />
-      </Routes>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 relative overflow-hidden">
+        <Stars />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/manage" element={<WordListManager />} />
+          <Route path="/test" element={<PreTest />} />
+        </Routes>
+      </div>
     </Router>
   );
 }

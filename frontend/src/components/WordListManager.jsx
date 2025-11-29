@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { wordListService } from '../services/supabase';
+import MagicButton from './MagicButton';
 
 const WordListManager = () => {
   const [listName, setListName] = useState('');
@@ -95,12 +96,13 @@ const WordListManager = () => {
             placeholder="e.g., apple, banana, cherry, dog"
           ></textarea>
         </div>
-        <button
+        <MagicButton
           type="submit"
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg text-xl transition duration-300 ease-in-out"
+          onClick={handleCreateWordList}
+          className="w-full text-xl"
         >
           Create Word List
-        </button>
+        </MagicButton>
         {error && <p className="text-red-500 mt-4 text-center text-lg">{error}</p>}
       </form>
 
@@ -137,12 +139,12 @@ const WordListManager = () => {
       </div>
 
       <div className="text-center mt-8">
-        <button
+        <MagicButton
           onClick={() => navigate('/')}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-xl transition duration-300 ease-in-out"
+          className="text-xl"
         >
           Go Home
-        </button>
+        </MagicButton>
       </div>
     </div>
   );
