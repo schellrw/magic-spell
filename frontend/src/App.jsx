@@ -7,13 +7,15 @@ import Stars from './components/Stars';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 relative overflow-hidden">
+      <div className="h-screen w-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900 relative overflow-auto">
         <Stars />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/manage" element={<WordListManager />} />
-          <Route path="/test" element={<PreTest />} />
-        </Routes>
+        <div className="relative z-20">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/manage" element={<WordListManager />} />
+            <Route path="/test" element={<PreTest />} />
+          </Routes>
+        </div>
       </div>
     </Router>
   );

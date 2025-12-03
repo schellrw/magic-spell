@@ -130,7 +130,6 @@ const PreTest = () => {
     if (feedback === 'correct') {
       return (
         <div className="relative">
-          <p className="text-green-600 text-3xl font-bold mt-4 animate-bounce">🎉 Correct! 🎉</p>
           <SparkleEffect />
         </div>
       );
@@ -150,7 +149,7 @@ const PreTest = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-red-100 p-8 flex flex-col items-center justify-center">
+      <div className="min-h-screen p-8 flex flex-col items-center justify-center">
         <p className="text-red-700 text-3xl text-center mb-8">Error: {error}</p>
         <MagicButton
           onClick={() => navigate('/manage')}
@@ -170,7 +169,7 @@ const PreTest = () => {
 
   if (!activeWordList || activeWordList.length === 0) {
     return (
-      <div className="min-h-screen bg-red-100 p-8 flex flex-col items-center justify-center">
+      <div className="min-h-screen p-8 flex flex-col items-center justify-center">
         <p className="text-red-700 text-3xl text-center mb-8">No active word lists found. Please go to "Manage Words" to activate one.</p>
         <MagicButton
           onClick={() => navigate('/manage')}
@@ -189,7 +188,7 @@ const PreTest = () => {
   }
 
   return (
-    <div className="min-h-screen bg-green-100 p-8 flex flex-col items-center justify-center">
+    <div className="min-h-screen p-8 flex flex-col items-center justify-center">
       <h1 className="text-5xl font-bold text-green-800 mb-8">Spelling Pre-Test</h1>
 
       {!testStarted && !testFinished && (

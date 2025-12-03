@@ -70,7 +70,7 @@ const WordListManager = () => {
   if (error) return <div className="text-red-500 text-3xl text-center p-8">Error: {error}</div>;
 
   return (
-    <div className="min-h-screen bg-purple-100 p-8">
+    <div className="min-h-screen p-8">
       <h1 className="text-4xl font-bold text-purple-800 text-center mb-8">Manage Word Lists</h1>
 
       <form onSubmit={handleCreateWordList} className="bg-white p-6 rounded-lg shadow-md max-w-lg mx-auto mb-8">
@@ -113,25 +113,27 @@ const WordListManager = () => {
         ) : (
           <ul className="space-y-4">
             {wordLists.map((list) => (
-              <li key={list.id} className="flex items-center justify-between bg-purple-50 p-4 rounded-lg shadow-sm">
-                <div>
+              <li key={list.id} className="flex items-center justify-between bg-purple-50 p-4 rounded-lg shadow-sm gap-4">
+                <div className="flex-grow">
                   <p className="text-xl font-semibold text-purple-800">{list.name}</p>
                   <p className="text-gray-600 text-md">Words: {list.words.map(word => word.text).join(', ')}</p>
                   <p className={`text-md font-medium ${list.is_active ? 'text-green-600' : 'text-red-600'}`}>
                     Status: {list.is_active ? 'Active' : 'Inactive'}
                   </p>
                 </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    value=""
-                    className="sr-only peer"
-                    checked={list.is_active}
-                    onChange={() => handleToggleActive(list.id, list.is_active)}
-                  />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                  <span className="ml-3 text-lg font-medium text-gray-900 dark:text-gray-300">{list.is_active ? 'Active' : 'Inactive'}</span>
-                </label>
+                <div className="flex items-center flex-shrink-0">
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      value=""
+                      className="sr-only peer"
+                      checked={list.is_active}
+                      onChange={() => handleToggleActive(list.id, list.is_active)}
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
+                    <span className="ml-3 text-lg font-medium text-gray-900">{list.is_active ? 'Active' : 'Inactive'}</span>
+                  </label>
+                </div>
               </li>
             ))}
           </ul>

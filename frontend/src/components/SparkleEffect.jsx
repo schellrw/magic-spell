@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
-const SparkleEffect = ({ duration = 1000, count = 20 }) => {
+const SparkleEffect = ({ duration = 1000, count = 25 }) => {
   const [sparkles, setSparkles] = useState([]);
 
   useEffect(() => {
     const newSparkles = Array.from({ length: count }).map((_, i) => ({
       id: i,
-      size: Math.random() * 5 + 3, // 3-8px
-      left: Math.random() * 100 - 50, // -50 to 50 relative to center
-      top: Math.random() * 100 - 50, // -50 to 50 relative to center
-      delay: Math.random() * 0.2, // 0-0.2s
-      duration: Math.random() * 0.5 + 0.5, // 0.5-1s
+      size: Math.random() * 8 + 4, // 4-12px
+      left: Math.random() * 100 - 50, 
+      top: Math.random() * 100 - 50, 
+      delay: Math.random() * 0.2, 
+      duration: Math.random() * 0.7 + 0.8, // 0.8-1.5s
     }));
     setSparkles(newSparkles);
 

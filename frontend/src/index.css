@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body, #root {
+  height: 100% !important;
+  width: 100% !important;
+  margin: 0;
+  padding: 0;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -9,7 +16,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: transparent; /* Changed from #242424 */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -29,10 +36,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
   cursor: url('/magic-wand-cursor.svg') 12 12, auto; /* 12 12 sets the hotspot to the center of a 24x24 icon */
 }
 
@@ -92,6 +95,15 @@ button:focus-visible {
   animation: flubbed-trick var(--animation-duration, 1s) ease-in-out forwards;
 }
 
+@keyframes flubbed-particle-fizzle {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(0); opacity: 0; }
+}
+
+.flubbed-particle-animation {
+  animation: flubbed-particle-fizzle var(--animation-duration, 1s) ease-out forwards;
+}
+
 @keyframes fade-out {
   0% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(-20px); }
@@ -104,7 +116,7 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #ffffff;
+    /* background-color: #ffffff;  REMOVED to allow celestial background */
   }
   a:hover {
     color: #747bff;
