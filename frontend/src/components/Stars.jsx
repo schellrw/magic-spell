@@ -38,7 +38,7 @@ const Stars = ({ count = 75 }) => {
   }, [count]);
 
   return (
-    <div className="fixed inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
+    <div className="absolute inset-0 w-full h-full">
       {stars}
     </div>
   );

@@ -130,7 +130,8 @@ const PreTest = () => {
     if (feedback === 'correct') {
       return (
         <div className="relative">
-          <SparkleEffect />
+          <SparkleEffect count={50} duration={1500} />
+          <div className="fixed inset-0 bg-yellow-400 opacity-20 flash-success-animation z-50 pointer-events-none"></div>
         </div>
       );
     } else if (feedback === 'incorrect') {
@@ -188,7 +189,7 @@ const PreTest = () => {
   }
 
   return (
-    <div className="min-h-screen p-8 flex flex-col items-center justify-center">
+    <div className={`min-h-screen p-8 flex flex-col items-center justify-center ${feedback === 'incorrect' ? 'shake-animation' : ''}`}>
       <h1 className="text-5xl font-bold text-green-800 mb-8">Spelling Pre-Test</h1>
 
       {!testStarted && !testFinished && (

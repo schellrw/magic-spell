@@ -30,9 +30,10 @@ const SparkleEffect = ({ duration = 1000, count = 25 }) => {
           style={{
             width: `${s.size}px`,
             height: `${s.size}px`,
-            transform: `translate(${s.left}px, ${s.top}px) scale(0)`,
+            '--tx': `${s.left}px`,
+            '--ty': `${s.top}px`,
+            '--animation-duration': `${s.duration}s`,
             animationDelay: `${s.delay}s`,
-            animationDuration: `${s.duration}s`,
           }}
         />
       ))}

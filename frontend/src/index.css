@@ -16,7 +16,7 @@ html, body, #root {
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: transparent; /* Changed from #242424 */
+  background-color: #1a1a2e; /* Fallback dark color */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -36,6 +36,7 @@ a:hover {
 
 body {
   margin: 0;
+  background-color: #1a1a2e;
   cursor: url('/magic-wand-cursor.svg') 12 12, auto; /* 12 12 sets the hotspot to the center of a 24x24 icon */
 }
 
@@ -74,9 +75,9 @@ button:focus-visible {
 }
 
 @keyframes sparkle-burst {
-  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  0% { transform: scale(0); opacity: 0; }
   20% { opacity: 1; }
-  100% { transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(1); opacity: 0; }
+  100% { transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(1); opacity: 0; }
 }
 
 .sparkle-burst-effect {
@@ -97,7 +98,7 @@ button:focus-visible {
 
 @keyframes flubbed-particle-fizzle {
   0% { transform: translate(0, 0) scale(1); opacity: 1; }
-  100% { transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(0); opacity: 0; }
+  100% { transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(0); opacity: 0; }
 }
 
 .flubbed-particle-animation {
@@ -111,6 +112,27 @@ button:focus-visible {
 
 .animate-fade-out {
   animation: fade-out var(--animation-duration, 1s) ease-out forwards;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake-animation {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes flash-success {
+  0% { opacity: 0; }
+  25% { opacity: 0.3; }
+  100% { opacity: 0; }
+}
+
+.flash-success-animation {
+  animation: flash-success 0.5s ease-out forwards;
+  pointer-events: none;
 }
 
 @media (prefers-color-scheme: light) {

@@ -30,9 +30,10 @@ const FlubbedTrickEffect = ({ duration = 1000, count = 20 }) => {
           style={{
             width: `${p.size}px`,
             height: `${p.size}px`,
-            transform: `translate(${p.left}px, ${p.top}px) scale(0)`,
+            '--tx': `${p.left}px`,
+            '--ty': `${p.top}px`,
+            '--animation-duration': `${p.duration}s`,
             animationDelay: `${p.delay}s`,
-            animationDuration: `${p.duration}s`,
           }}
         />
       ))}

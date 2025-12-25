@@ -25,8 +25,10 @@ const MagicButton = ({ children, onClick, className = '' }) => {
         bg-gradient-to-r from-purple-500 to-pink-500
         hover:from-purple-600 hover:to-pink-600
         active:from-purple-700 active:to-pink-700
+        border-2 border-transparent hover:border-white/40
+        hover:shadow-[0_0_20px_rgba(192,132,252,0.6)]
         transition-all duration-300 ease-in-out
-        transform hover:scale-105 active:scale-95
+        transform hover:scale-105 hover:-translate-y-1 active:scale-95 active:translate-y-0
         ${className}`}
     >
       {children}
