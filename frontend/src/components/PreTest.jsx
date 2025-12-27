@@ -16,7 +16,7 @@ const PreTest = () => {
   const [testFinished, setTestFinished] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { speak } = useSpeech();
+  const { speak, cycleVoice, currentVoice } = useSpeech();
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const [shuffledWords, setShuffledWords] = useState([]);
@@ -26,7 +26,9 @@ const PreTest = () => {
   }, []);
 
   const speakWord = useCallback((wordObject) => {
-    speak(wordObject.text);
+    if (wordObject && wordObject.text) {
+      speak(wordObject.text);
+    }
   }, [speak]);
 
   useEffect(() => {
@@ -79,6 +81,17 @@ const PreTest = () => {
   const handleInputChange = (e) => {
     setUserInput(e.target.value);
     setFeedback(''); // Clear feedback when user types
+  };
+
+  const handleChangeVoice = (e) => {
+    e.preventDefault();
+    cycleVoice();
+    // Re-speak the word after a short delay to allow state update
+    setTimeout(() => {
+        if (shuffledWords[currentWordIndex]) {
+            speak(shuffledWords[currentWordIndex].text);
+        }
+    }, 100);
   };
 
   const handleSubmitWord = async (e) => {
@@ -216,12 +229,25 @@ const PreTest = () => {
       {testStarted && !testFinished && (
         <div className="flex flex-col items-center">
           <p className="text-4xl text-green-700 mb-6">Word {currentWordIndex + 1} of {shuffledWords.length}</p>
-          <MagicButton
-            onClick={() => speakWord(shuffledWords[currentWordIndex])}
-            className="text-3xl mb-8"
-          >
-            🔊 Hear Word
-          </MagicButton>
+          
+          <div className="flex gap-4 mb-8">
+            <MagicButton
+                onClick={() => speakWord(shuffledWords[currentWordIndex])}
+                className="text-3xl"
+            >
+                🔊 Hear Word
+            </MagicButton>
+            
+            <button
+                onClick={handleChangeVoice}
+                className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg text-xl transition transform hover:scale-105 shadow-[0_4px_0_rgb(107,33,168)] hover:shadow-[0_2px_0_rgb(107,33,168)] hover:translate-y-[2px]"
+                title={`Current voice: ${currentVoice ? currentVoice.name : 'Default'}`}
+                type="button" 
+            >
+                🗣️ Change Voice
+            </button>
+          </div>
+
           <form onSubmit={handleSubmitWord} className="flex flex-col items-center">
             <input
               type="text"
