@@ -1,3 +1,2 @@
-# Enforce unix style line endings
-* text=auto eol=lf
-
+# Enforce windows style line endings
+* text=auto eol=crlf
