@@ -27,11 +27,7 @@ function App() {
 
   return (
     <Router>
-      {/* Background Layer - Fixed z-negative */}
-      <div 
-        className="fixed inset-0 bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950" 
-        style={{ zIndex: -10, background: 'linear-gradient(to bottom right, #111827, #1e1b4b, #3b0764)' }}
-      ></div>
+      {/* Background Layer - Removed, handled in CSS body */}
       
       {/* Stars Layer - Fixed z-0 */}
       <div className="fixed inset-0 z-0 pointer-events-none">

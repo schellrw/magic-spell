@@ -166,7 +166,7 @@ const PreTest = () => {
   if (error) {
     return (
       <div className="min-h-screen p-8 flex flex-col items-center justify-center">
-        <p className="text-red-700 text-3xl text-center mb-8">Error: {error}</p>
+        <p className="text-red-400 text-3xl text-center mb-8">Error: {error}</p>
         <MagicButton
           onClick={() => navigate('/manage')}
           className="text-2xl mb-8"
@@ -186,7 +186,7 @@ const PreTest = () => {
   if (!activeWordList || activeWordList.length === 0) {
     return (
       <div className="min-h-screen p-8 flex flex-col items-center justify-center">
-        <p className="text-red-700 text-3xl text-center mb-8">No active word lists found. Please go to "Manage Words" to activate one.</p>
+        <p className="text-red-400 text-3xl text-center mb-8">No active word lists found. Please go to "Manage Words" to activate one.</p>
         <MagicButton
           onClick={() => navigate('/manage')}
           className="text-2xl mb-8"
@@ -205,30 +205,32 @@ const PreTest = () => {
 
   return (
     <div className={`min-h-screen p-8 flex flex-col items-center justify-center ${feedback === 'incorrect' ? 'shake-animation' : ''}`}>
-      <h1 className="text-5xl font-bold text-green-800 mb-8">Spelling Pre-Test</h1>
+      <h1 className="text-5xl font-bold text-green-300 mb-8 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">Spelling Pre-Test</h1>
 
       {!testStarted && !testFinished && (
         <div className="text-center">
-          <p className="text-3xl text-green-700 mb-6">Ready to practice?</p>
-          <p className="text-2xl text-green-700 mb-6">Active lists: {activeWordList.map(list => list.name).join(', ')}</p>
-          <MagicButton
-            onClick={startTest}
-            className="text-4xl mb-8"
-          >
-            Start Test
-          </MagicButton>
-          <MagicButton
-            onClick={() => navigate('/')}
-            className="text-xl mt-12"
-          >
-            Go Home
-          </MagicButton>
+          <p className="text-3xl text-green-200 mb-6">Ready to practice?</p>
+          <p className="text-2xl text-green-200 mb-12">Active lists: {activeWordList.map(list => list.name).join(', ')}</p>
+          <div className="flex flex-row space-x-12 justify-center">
+            <MagicButton
+              onClick={startTest}
+              className="text-4xl py-6 px-12 shadow-xl"
+            >
+              Start Test
+            </MagicButton>
+            <MagicButton
+              onClick={() => navigate('/')}
+              className="text-4xl py-6 px-12 shadow-xl"
+            >
+              Go Home
+            </MagicButton>
+          </div>
         </div>
       )}
 
       {testStarted && !testFinished && (
         <div className="flex flex-col items-center">
-          <p className="text-4xl text-green-700 mb-6">Word {currentWordIndex + 1} of {shuffledWords.length}</p>
+          <p className="text-4xl text-green-200 mb-6">Word {currentWordIndex + 1} of {shuffledWords.length}</p>
           
           <div className="flex gap-4 mb-8">
             <MagicButton
@@ -252,7 +254,7 @@ const PreTest = () => {
             <input
               type="text"
               ref={inputRef}
-              className="w-80 p-4 border-4 border-blue-400 rounded-lg text-4xl text-center focus:outline-none focus:ring-4 focus:ring-blue-600"
+              className="w-full max-w-2xl py-6 px-4 border-4 border-blue-400 rounded-lg text-4xl leading-normal text-center focus:outline-none focus:ring-4 focus:ring-blue-600 bg-white text-gray-900"
               value={userInput}
               onChange={handleInputChange}
               placeholder="Type the word here..."
@@ -273,8 +275,8 @@ const PreTest = () => {
 
       {testFinished && (
         <div className="text-center">
-          <h2 className="text-5xl font-bold text-green-800 mb-6">Test Complete!</h2>
-          <p className="text-4xl text-green-700 mb-8">You scored {score} out of {shuffledWords.length}!</p>
+          <h2 className="text-5xl font-bold text-green-300 mb-6 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">Test Complete!</h2>
+          <p className="text-4xl text-green-200 mb-8">You scored {score} out of {shuffledWords.length}!</p>
           <button
             onClick={startTest}
             className="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105 mb-4"

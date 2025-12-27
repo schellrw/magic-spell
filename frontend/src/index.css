@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 html, body, #root {
   height: 100% !important;
@@ -16,7 +14,7 @@ html, body, #root {
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #1a1a2e; /* Fallback dark color */
+  /* background-color: #1a1a2e; Fallback dark color */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -36,7 +34,10 @@ a:hover {
 
 body {
   margin: 0;
-  background-color: #1a1a2e;
+  /* background-color: #1a1a2e; */
+  background: linear-gradient(to bottom right, #111827, #1e1b4b, #3b0764);
+  background-attachment: fixed;
+  min-height: 100vh;
   cursor: url('/magic-wand-cursor.svg') 12 12, auto; /* 12 12 sets the hotspot to the center of a 24x24 icon */
 }
 

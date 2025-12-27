@@ -71,7 +71,7 @@ const WordListManager = () => {
 
   return (
     <div className="min-h-screen p-8">
-      <h1 className="text-4xl font-bold text-purple-800 text-center mb-8">Manage Word Lists</h1>
+      <h1 className="text-4xl font-bold text-purple-200 text-center mb-8 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">Manage Word Lists</h1>
 
       <form onSubmit={handleCreateWordList} className="bg-white p-6 rounded-lg shadow-md max-w-lg mx-auto mb-8">
         <h2 className="text-2xl font-semibold text-purple-700 mb-4">Create New Word List</h2>
@@ -80,7 +80,7 @@ const WordListManager = () => {
           <input
             type="text"
             id="listName"
-            className="w-full p-3 border border-purple-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full p-3 border border-purple-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-gray-900"
             value={listName}
             onChange={(e) => setListName(e.target.value)}
             placeholder="e.g., Week 1 Spelling"
@@ -90,7 +90,7 @@ const WordListManager = () => {
           <label htmlFor="wordsInput" className="block text-purple-600 text-lg font-medium mb-2">Words (comma-separated)</label>
           <textarea
             id="wordsInput"
-            className="w-full p-3 border border-purple-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 h-24"
+            className="w-full p-3 border border-purple-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 h-24 bg-white text-gray-900"
             value={wordsInput}
             onChange={(e) => setWordsInput(e.target.value)}
             placeholder="e.g., apple, banana, cherry, dog"
