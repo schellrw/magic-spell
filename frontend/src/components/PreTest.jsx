@@ -40,6 +40,24 @@ const PreTest = () => {
     }
   }, [testStarted, currentWordIndex, shuffledWords, speakWord]);
 
+  useEffect(() => {
+    const handleDocumentClick = (e) => {
+      // If we are in the middle of a test, and the user clicks somewhere that isn't a button or input
+      // we want to refocus the input to keep them "in the zone".
+      if (testStarted && !testFinished && inputRef.current) {
+        // Check if the clicked element is interactive (button, link, input)
+        const isInteractive = e.target.closest('button, a, input, textarea, select');
+        
+        if (!isInteractive) {
+          inputRef.current.focus();
+        }
+      }
+    };
+
+    document.addEventListener('click', handleDocumentClick);
+    return () => document.removeEventListener('click', handleDocumentClick);
+  }, [testStarted, testFinished]);
+
   const fetchActiveWordLists = async () => {
     try {
       setLoading(true);
