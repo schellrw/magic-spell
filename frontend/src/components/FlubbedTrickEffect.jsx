@@ -37,7 +37,7 @@ const FlubbedTrickEffect = ({ duration = 1000, count = 20 }) => {
           }}
         />
       ))}
-      <p className="absolute text-red-500 font-bold text-lg animate-fade-out"
+      <p className="absolute text-red-400 font-bold text-lg animate-fade-out"
         style={{ animationDuration: `${duration / 1000}s` }}>Oops!</p>
     </div>
   );

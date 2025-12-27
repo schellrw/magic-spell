@@ -106,7 +106,7 @@ const PreTest = () => {
       } else {
         endTest();
       }
-    }, 2000); // 2 seconds delay
+    }, 2500); // Increased delay to enjoy the animation
   };
 
   const endTest = async () => {
@@ -129,17 +129,19 @@ const PreTest = () => {
   const renderFeedback = () => {
     if (feedback === 'correct') {
       return (
-        <div className="relative">
-          <SparkleEffect count={50} duration={1500} />
-          <div className="fixed inset-0 bg-yellow-400 opacity-20 flash-success-animation z-50 pointer-events-none"></div>
+        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
+          {/* Flash Overlay */}
+          <div className="fixed inset-0 bg-yellow-400/30 flash-success-animation z-40 pointer-events-none mix-blend-screen"></div>
+          {/* Confetti on TOP of overlay */}
+          <SparkleEffect count={100} spread={window.innerWidth / 2} minSize={8} maxSize={24} />
         </div>
       );
     } else if (feedback === 'incorrect') {
       const correctWord = shuffledWords[currentWordIndex].text;
       return (
         <div className="relative">
-          <p className="text-red-600 text-3xl font-bold mt-4">Incorrect. The word was: {correctWord}</p>
-          <FlubbedTrickEffect />
+          <p className="text-red-400 text-4xl font-bold mt-6 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">Incorrect. The word was: {correctWord}</p>
+          <FlubbedTrickEffect count={30} duration={1000} />
         </div>
       );
     }

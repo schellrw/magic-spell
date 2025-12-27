@@ -27,12 +27,15 @@ function App() {
 
   return (
     <Router>
-      {/* Background Layer - Fixed z-0 */}
-      <div className="fixed inset-0 z-0 bg-gradient-to-br from-gray-900 via-indigo-900 to-purple-900"></div>
+      {/* Background Layer - Fixed z-negative */}
+      <div 
+        className="fixed inset-0 bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950" 
+        style={{ zIndex: -10, background: 'linear-gradient(to bottom right, #111827, #1e1b4b, #3b0764)' }}
+      ></div>
       
-      {/* Stars Layer - Fixed z-10 */}
-      <div className="fixed inset-0 z-10 pointer-events-none">
-        <Stars />
+      {/* Stars Layer - Fixed z-0 */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <Stars count={100} />
       </div>
 
       {/* Global Sparkles Layer - Fixed z-50 */}
@@ -54,8 +57,8 @@ function App() {
         ))}
       </div>
 
-      {/* Content Layer - Relative z-20 */}
-      <div className="relative z-20 h-screen w-screen overflow-auto">
+      {/* Content Layer - Relative z-10 */}
+      <div className="relative z-10 h-screen w-screen overflow-auto">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/manage" element={<WordListManager />} />
