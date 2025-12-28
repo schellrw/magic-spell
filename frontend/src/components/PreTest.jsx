@@ -130,7 +130,8 @@ const PreTest = () => {
 
   const handleSubmitWord = async (e) => {
     e.preventDefault();
-    if (!userInput.trim()) return;
+    // Prevent submission if already processing feedback or empty input
+    if (feedback || !userInput.trim()) return;
 
     const currentWord = shuffledWords[currentWordIndex].text;
     const isCorrect = userInput.trim().toLowerCase() === currentWord.toLowerCase();
@@ -305,7 +306,7 @@ const PreTest = () => {
 
       {testStarted && !testFinished && (
         <div className="flex flex-col items-center">
-          <p className="text-4xl text-green-200 mb-6">Word {currentWordIndex + 1} of {shuffledWords.length}</p>
+          <p className="text-4xl text-green-200 mb-6">Word {Math.min(currentWordIndex + 1, shuffledWords.length)} of {shuffledWords.length}</p>
           
           <div className="flex gap-4 mb-8">
             <MagicButton
@@ -329,18 +330,20 @@ const PreTest = () => {
             <input
               type="text"
               ref={inputRef}
-              className="w-full max-w-2xl py-6 px-4 border-4 border-blue-400 rounded-lg text-4xl leading-normal text-center focus:outline-none focus:ring-4 focus:ring-blue-600 bg-white text-gray-900"
+              className="w-full max-w-2xl py-6 px-4 border-4 border-blue-400 rounded-lg text-4xl leading-normal text-center focus:outline-none focus:ring-4 focus:ring-blue-600 bg-white text-gray-900 disabled:bg-gray-100 disabled:text-gray-500"
               value={userInput}
               onChange={handleInputChange}
               placeholder="Type the word here..."
               autoCapitalize="off"
               autoCorrect="off"
               spellCheck="false"
+              disabled={!!feedback}
             />
             {renderFeedback()}
             <MagicButton
               type="submit"
-              className="text-3xl mt-8"
+              className="text-3xl mt-8 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!!feedback}
             >
               Check Answer
             </MagicButton>
