@@ -49,9 +49,10 @@ const SignUp = () => {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none text-lg"
+              className="w-full px-4 py-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none text-lg text-purple-900 bg-white"
               placeholder="Merlin the Great"
               required
+              autoComplete="nickname"
             />
           </div>
 
@@ -64,9 +65,10 @@ const SignUp = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none text-lg"
+              className="w-full px-4 py-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none text-lg text-purple-900 bg-white"
               placeholder="wizard@magicspell.com"
               required
+              autoComplete="username email"
             />
           </div>
 
@@ -79,9 +81,10 @@ const SignUp = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none text-lg"
+              className="w-full px-4 py-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:outline-none text-lg text-purple-900 bg-white"
               placeholder="********"
               required
+              autoComplete="new-password"
             />
           </div>
 
@@ -90,8 +93,8 @@ const SignUp = () => {
             <div className="flex space-x-4">
               <label className={`flex-1 cursor-pointer p-4 rounded-xl border-2 text-center transition-all ${
                 role === 'learner' 
-                  ? 'bg-purple-100 border-purple-500 text-purple-900 font-bold' 
-                  : 'bg-gray-50 border-gray-200 hover:border-purple-300'
+                  ? 'bg-purple-100 border-purple-500 text-purple-900 font-bold shadow-md' 
+                  : 'bg-white border-gray-200 hover:border-purple-300 text-gray-600'
               }`}>
                 <input 
                   type="radio" 
@@ -107,8 +110,8 @@ const SignUp = () => {
               
               <label className={`flex-1 cursor-pointer p-4 rounded-xl border-2 text-center transition-all ${
                 role === 'parent' 
-                  ? 'bg-blue-100 border-blue-500 text-blue-900 font-bold' 
-                  : 'bg-gray-50 border-gray-200 hover:border-blue-300'
+                  ? 'bg-blue-100 border-blue-500 text-blue-900 font-bold shadow-md' 
+                  : 'bg-white border-gray-200 hover:border-blue-300 text-gray-600'
               }`}>
                 <input 
                   type="radio" 
