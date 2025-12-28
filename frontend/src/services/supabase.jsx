@@ -212,3 +212,40 @@ export const feedbackService = {
     return data.publicUrl;
   }
 };
+
+// App Settings Operations
+export const settingsService = {
+  // Get feedback images
+  async getFeedbackImages() {
+    console.log("Fetching feedback images...");
+    const { data, error } = await supabase
+      .from('app_settings')
+      .select('key, value')
+      .in('key', ['correct_image', 'incorrect_image']);
+
+    if (error) {
+        console.error("Error fetching settings:", error);
+        return { correct_image: null, incorrect_image: null };
+    }
+    
+    console.log("Raw settings data:", data);
+
+    // Convert array to object
+    return data.reduce((acc, curr) => {
+      acc[curr.key] = curr.value;
+      return acc;
+    }, {});
+  },
+
+  // Update a setting
+  async updateSetting(key, value) {
+    const { data, error } = await supabase
+      .from('app_settings')
+      .upsert({ key, value })
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  }
+};

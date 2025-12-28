@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { wordListService, testResultService } from '../services/supabase';
+import { wordListService, testResultService, settingsService } from '../services/supabase';
 import useSpeech from '../hooks/useSpeech';
 import MagicButton from './MagicButton';
 import SparkleEffect from './SparkleEffect';
@@ -20,8 +20,24 @@ const PreTest = () => {
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const [shuffledWords, setShuffledWords] = useState([]);
+  const [feedbackImages, setFeedbackImages] = useState({ correct: null, incorrect: null });
 
   useEffect(() => {
+    const loadImages = async () => {
+      try {
+        const settings = await settingsService.getFeedbackImages();
+        console.log("Loaded feedback images from Supabase:", settings);
+        
+        // Map the database keys (correct_image, incorrect_image) to state keys (correct, incorrect)
+        setFeedbackImages({
+          correct: settings.correct_image || null,
+          incorrect: settings.incorrect_image || null
+        });
+      } catch (error) {
+        console.error("Failed to load feedback images", error);
+      }
+    };
+    loadImages();
     fetchActiveWordLists();
   }, []);
 
@@ -137,7 +153,7 @@ const PreTest = () => {
       } else {
         endTest();
       }
-    }, 2500); // Increased delay to enjoy the animation
+    }, 5000); // Increased delay to 5 seconds to enjoy the animation and images
   };
 
   const endTest = async () => {
@@ -158,11 +174,33 @@ const PreTest = () => {
   };
 
   const renderFeedback = () => {
+    console.log("Rendering feedback:", feedback, feedbackImages);
     if (feedback === 'correct') {
       return (
         <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
           {/* Flash Overlay */}
           <div className="fixed inset-0 bg-yellow-400/30 flash-success-animation z-40 pointer-events-none mix-blend-screen"></div>
+          
+          {/* Feedback Images - Left and Right */}
+          {feedbackImages.correct && (
+            <>
+              <div className="fixed left-8 top-1/2 -translate-y-1/2 z-50 drop-shadow-2xl">
+                <img 
+                  src={feedbackImages.correct} 
+                  alt="Correct!" 
+                  className="w-48 h-48 object-contain pop-in-animation" 
+                />
+              </div>
+              <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 drop-shadow-2xl">
+                <img 
+                  src={feedbackImages.correct} 
+                  alt="Correct!" 
+                  className="w-48 h-48 object-contain pop-in-animation" 
+                />
+              </div>
+            </>
+          )}
+
           {/* Confetti on TOP of overlay */}
           <SparkleEffect count={100} spread={window.innerWidth / 2} minSize={8} maxSize={24} />
         </div>
@@ -171,6 +209,25 @@ const PreTest = () => {
       const correctWord = shuffledWords[currentWordIndex].text;
       return (
         <div className="relative">
+           {/* Feedback Images - Left and Right */}
+           {feedbackImages.incorrect && (
+            <>
+              <div className="fixed left-8 top-1/2 -translate-y-1/2 z-50 drop-shadow-2xl">
+                <img 
+                  src={feedbackImages.incorrect} 
+                  alt="Try Again" 
+                  className="w-48 h-48 object-contain pop-in-animation" 
+                />
+              </div>
+              <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 drop-shadow-2xl">
+                <img 
+                  src={feedbackImages.incorrect} 
+                  alt="Try Again" 
+                  className="w-48 h-48 object-contain pop-in-animation" 
+                />
+              </div>
+            </>
+          )}
           <p className="text-red-400 text-4xl font-bold mt-6 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">Incorrect. The word was: {correctWord}</p>
           <FlubbedTrickEffect count={30} duration={1000} />
         </div>
