@@ -10,7 +10,7 @@ const NavBar = () => {
   const handleLogout = async () => {
     try {
       await authService.signOut();
-      navigate('/login');
+      navigate('/logout');
     } catch (error) {
       console.error('Error logging out:', error);
     }
@@ -64,4 +64,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-

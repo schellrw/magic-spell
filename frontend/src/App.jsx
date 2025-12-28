@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Login from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
+import LogoutPage from './components/auth/LogoutPage';
 import NavBar from './components/NavBar';
 import HomePage from './components/HomePage';
 import WordListManager from './components/WordListManager';
@@ -67,6 +68,7 @@ function App() {
               {/* Public Routes */}
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/logout" element={<LogoutPage />} />
 
               {/* Protected Routes */}
               <Route path="/" element={
