@@ -26,7 +26,6 @@ const PreTest = () => {
     const loadImages = async () => {
       try {
         const settings = await settingsService.getFeedbackImages();
-        console.log("Loaded feedback images from Supabase:", settings);
         
         // Map the database keys (correct_image, incorrect_image) to state keys (correct, incorrect)
         setFeedbackImages({
@@ -174,8 +173,7 @@ const PreTest = () => {
     }
   };
 
-  const renderFeedback = () => {
-    console.log("Rendering feedback:", feedback, feedbackImages);
+  const feedbackDisplay = React.useMemo(() => {
     if (feedback === 'correct') {
       return (
         <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
@@ -207,7 +205,7 @@ const PreTest = () => {
         </div>
       );
     } else if (feedback === 'incorrect') {
-      const correctWord = shuffledWords[currentWordIndex].text;
+      const correctWord = shuffledWords[currentWordIndex]?.text;
       return (
         <div className="relative">
            {/* Feedback Images - Left and Right */}
@@ -235,7 +233,7 @@ const PreTest = () => {
       );
     }
     return null;
-  };
+  }, [feedback, feedbackImages, shuffledWords, currentWordIndex]);
 
   if (loading) return <div className="text-3xl text-center p-8 text-blue-700">Loading test...</div>;
 
@@ -338,7 +336,7 @@ const PreTest = () => {
               spellCheck="false"
               disabled={!!feedback}
             />
-            {renderFeedback()}
+            {feedbackDisplay}
             <MagicButton
               type="submit"
               className="text-3xl mt-8 disabled:opacity-50 disabled:cursor-not-allowed"

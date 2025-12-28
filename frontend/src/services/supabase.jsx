@@ -217,7 +217,6 @@ export const feedbackService = {
 export const settingsService = {
   // Get feedback images
   async getFeedbackImages() {
-    console.log("Fetching feedback images...");
     const { data, error } = await supabase
       .from('app_settings')
       .select('key, value')
@@ -228,8 +227,6 @@ export const settingsService = {
         return { correct_image: null, incorrect_image: null };
     }
     
-    console.log("Raw settings data:", data);
-
     // Convert array to object
     return data.reduce((acc, curr) => {
       acc[curr.key] = curr.value;
