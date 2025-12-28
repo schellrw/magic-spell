@@ -79,15 +79,33 @@ export const AuthProvider = ({ children }) => {
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
+        .maybeSingle(); // Changed from .single() to .maybeSingle() to handle missing rows without error
 
       const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
       
-      if (error && error.code !== 'PGRST116') {
+      if (error) {
         console.error('Error fetching profile:', error);
       }
       
-      setProfile(data);
+      if (data) {
+        setProfile(data);
+      } else {
+        // If no profile exists, create a default learner profile
+        console.warn('No profile found for user, creating default...');
+        const { data: newProfile, error: createError } = await supabase
+          .from('profiles')
+          .insert([
+            { id: userId, username: 'New Wizard', role: 'learner' }
+          ])
+          .select()
+          .single();
+          
+        if (createError) {
+          console.error('Error creating default profile:', createError);
+        } else {
+          setProfile(newProfile);
+        }
+      }
     } catch (error) {
       console.error('Error in fetchProfile:', error);
     } finally {
