@@ -8,14 +8,15 @@ export default function useSpeech() {
   useEffect(() => {
     const loadVoices = () => {
       const availableVoices = window.speechSynthesis.getVoices();
-      setVoices(availableVoices);
+      const englishVoices = availableVoices.filter(voice => voice.lang.startsWith('en'));
+      setVoices(englishVoices);
 
       // Smart Default: Priority list for better voices
-      const preferredVoice = availableVoices.find(v => v.name.includes('Google US English')) 
-        || availableVoices.find(v => v.name.includes('Zira')) // Windows Female
-        || availableVoices.find(v => v.name.includes('Samantha')) // Mac Female
-        || availableVoices.find(v => v.lang.startsWith('en') && v.name.includes('Female'))
-        || availableVoices.find(v => v.lang.startsWith('en'));
+      const preferredVoice = englishVoices.find(v => v.name.includes('Google US English')) 
+        || englishVoices.find(v => v.name.includes('Zira')) // Windows Female
+        || englishVoices.find(v => v.name.includes('Samantha')) // Mac Female
+        || englishVoices.find(v => v.name.includes('Female'))
+        || englishVoices[0];
 
       if (preferredVoice) {
         setSelectedVoice(preferredVoice);
