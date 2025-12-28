@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 
-const MagicButton = ({ children, onClick, className = '', type = 'button' }) => {
+const MagicButton = ({ children, onClick, className = '', type = 'button', ...props }) => {
   const [showSparkles, setShowSparkles] = useState(false);
 
   const sparkles = useMemo(() => {
@@ -33,6 +33,7 @@ const MagicButton = ({ children, onClick, className = '', type = 'button' }) => 
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
+      {...props}
       className={`relative px-6 py-3 rounded-full font-bold text-white shadow-lg
         bg-gradient-to-r from-purple-500 to-pink-500
         hover:from-purple-600 hover:to-pink-600

@@ -154,7 +154,7 @@ const PreTest = () => {
       } else {
         endTest();
       }
-    }, 5000); // Increased delay to 5 seconds to enjoy the animation and images
+    }, 4000); // Increased delay to 5 seconds to enjoy the animation and images
   };
 
   const endTest = async () => {
@@ -185,18 +185,18 @@ const PreTest = () => {
           {/* Feedback Images - Left and Right */}
           {feedbackImages.correct && (
             <>
-              <div className="fixed left-8 top-1/2 -translate-y-1/2 z-50 drop-shadow-2xl">
+              <div className="fixed left-2 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 z-50 drop-shadow-2xl">
                 <img 
                   src={feedbackImages.correct} 
                   alt="Correct!" 
-                  className="w-48 h-48 object-contain pop-in-animation" 
+                  className="w-24 h-24 sm:w-32 sm:h-32 md:w-56 md:h-56 lg:w-80 lg:h-80 object-contain pop-in-animation" 
                 />
               </div>
-              <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 drop-shadow-2xl">
+              <div className="fixed right-2 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 drop-shadow-2xl">
                 <img 
                   src={feedbackImages.correct} 
                   alt="Correct!" 
-                  className="w-48 h-48 object-contain pop-in-animation" 
+                  className="w-24 h-24 sm:w-32 sm:h-32 md:w-56 md:h-56 lg:w-80 lg:h-80 object-contain pop-in-animation" 
                 />
               </div>
             </>
@@ -213,18 +213,18 @@ const PreTest = () => {
            {/* Feedback Images - Left and Right */}
            {feedbackImages.incorrect && (
             <>
-              <div className="fixed left-8 top-1/2 -translate-y-1/2 z-50 drop-shadow-2xl">
+              <div className="fixed left-2 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 z-50 drop-shadow-2xl">
                 <img 
                   src={feedbackImages.incorrect} 
                   alt="Try Again" 
-                  className="w-48 h-48 object-contain pop-in-animation" 
+                  className="w-24 h-24 sm:w-32 sm:h-32 md:w-56 md:h-56 lg:w-80 lg:h-80 object-contain pop-in-animation" 
                 />
               </div>
-              <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 drop-shadow-2xl">
+              <div className="fixed right-2 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 drop-shadow-2xl">
                 <img 
                   src={feedbackImages.incorrect} 
                   alt="Try Again" 
-                  className="w-48 h-48 object-contain pop-in-animation" 
+                  className="w-24 h-24 sm:w-32 sm:h-32 md:w-56 md:h-56 lg:w-80 lg:h-80 object-contain pop-in-animation" 
                 />
               </div>
             </>
@@ -316,14 +316,13 @@ const PreTest = () => {
                 🔊 Hear Word
             </MagicButton>
             
-            <button
+            <MagicButton
                 onClick={handleChangeVoice}
-                className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg text-xl transition transform hover:scale-105 shadow-[0_4px_0_rgb(107,33,168)] hover:shadow-[0_2px_0_rgb(107,33,168)] hover:translate-y-[2px]"
+                className="text-xl"
                 title={`Current voice: ${currentVoice ? currentVoice.name : 'Default'}`}
-                type="button" 
             >
                 🗣️ Change Voice
-            </button>
+            </MagicButton>
           </div>
 
           <form onSubmit={handleSubmitWord} className="flex flex-col items-center">
