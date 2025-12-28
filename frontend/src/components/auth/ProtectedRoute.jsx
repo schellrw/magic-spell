@@ -6,6 +6,8 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   const { user, profile, loading } = useAuth();
   const location = useLocation();
 
+  console.log('ProtectedRoute:', { user, profile, loading, requiredRole, location });
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -17,11 +19,12 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   }
 
   if (!user) {
+    console.log('Redirecting to login...');
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   if (requiredRole && profile?.role !== requiredRole) {
-    // If user is logged in but doesn't have required role, redirect to home
+    console.log('Redirecting to home (role mismatch)...');
     return <Navigate to="/" replace />;
   }
 
@@ -29,4 +32,3 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 };
 
 export default ProtectedRoute;
-
