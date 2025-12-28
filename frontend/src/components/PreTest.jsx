@@ -5,6 +5,7 @@ import useSpeech from '../hooks/useSpeech';
 import MagicButton from './MagicButton';
 import SparkleEffect from './SparkleEffect';
 import FlubbedTrickEffect from './FlubbedTrickEffect';
+import { useAuth } from '../context/AuthContext';
 
 const PreTest = () => {
   const [activeWordList, setActiveWordList] = useState(null);
@@ -21,6 +22,7 @@ const PreTest = () => {
   const inputRef = useRef(null);
   const [shuffledWords, setShuffledWords] = useState([]);
   const [feedbackImages, setFeedbackImages] = useState({ correct: null, incorrect: null });
+  const { isAdmin } = useAuth(); // Moved hook call to top level
 
   useEffect(() => {
     const loadImages = async () => {
@@ -92,7 +94,8 @@ const PreTest = () => {
         setShuffledWords(allWords);
 
       } else {
-        setError('No active word lists found. Please activate one or more from the Manage Words section.');
+        // Don't set error immediately, let the render logic handle empty state
+        setActiveWordList([]);
       }
     } catch (err) {
       setError('Failed to fetch active word lists.');
@@ -260,13 +263,22 @@ const PreTest = () => {
   if (!activeWordList || activeWordList.length === 0) {
     return (
       <div className="min-h-screen p-8 flex flex-col items-center justify-center">
-        <p className="text-red-400 text-3xl text-center mb-8">No active word lists found. Please go to "Manage Words" to activate one.</p>
-        <MagicButton
-          onClick={() => navigate('/manage')}
-          className="text-2xl mb-8"
-        >
-          Go to Manage Words
-        </MagicButton>
+        <p className="text-red-400 text-3xl text-center mb-8">No active word lists found!</p>
+        
+        {isAdmin ? (
+            <div className="flex flex-col items-center">
+                <p className="text-white text-2xl text-center mb-6">You need to create and activate a word list first.</p>
+                <MagicButton
+                onClick={() => navigate('/manage')}
+                className="text-2xl mb-8"
+                >
+                Go to Manage Words
+                </MagicButton>
+            </div>
+        ) : (
+            <p className="text-white text-2xl text-center mb-8">Ask a parent to create a word list for you!</p>
+        )}
+
         <MagicButton
           onClick={() => navigate('/')}
           className="text-2xl mt-4"

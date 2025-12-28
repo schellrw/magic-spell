@@ -46,10 +46,9 @@ const Login = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none text-lg text-blue-900 bg-white"
+              className="w-full px-4 py-3 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none text-lg"
               placeholder="wizard@magicspell.com"
               required
-              autoComplete="username email"
             />
           </div>
 
@@ -62,10 +61,9 @@ const Login = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none text-lg text-blue-900 bg-white"
+              className="w-full px-4 py-3 rounded-xl border-2 border-blue-200 focus:border-blue-500 focus:outline-none text-lg"
               placeholder="********"
               required
-              autoComplete="current-password"
             />
           </div>
 

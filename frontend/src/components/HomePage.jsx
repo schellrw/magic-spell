@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import MagicButton from './MagicButton';
+import { useAuth } from '../context/AuthContext';
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const { isAdmin } = useAuth();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
@@ -14,12 +16,14 @@ const HomePage = () => {
         >
           Practice Words
         </MagicButton>
-        <MagicButton 
-          onClick={() => navigate('/manage')}
-          className="text-4xl py-6 px-12 shadow-xl"
-        >
-          Manage Words
-        </MagicButton>
+        {isAdmin && (
+          <MagicButton 
+            onClick={() => navigate('/manage')}
+            className="text-4xl py-6 px-12 shadow-xl"
+          >
+            Manage Words
+          </MagicButton>
+        )}
       </div>
     </div>
   );
