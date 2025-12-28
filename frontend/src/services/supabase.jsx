@@ -7,11 +7,12 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Word List Operations
 export const wordListService = {
-  // Get all word lists
+  // Get all word lists (excluding soft-deleted ones)
   async getAll() {
     const { data, error } = await supabase
       .from('word_lists')
       .select('*')
+      .is('deleted_at', null)
       .order('created_at', { ascending: false });
     
     if (error) throw error;
@@ -23,6 +24,7 @@ export const wordListService = {
     const { data, error } = await supabase
       .from('word_lists')
       .select('*')
+      .is('deleted_at', null)
       .eq('is_active', true)
       .limit(1); // Limit to 1 for backward compatibility, but ideally this should be replaced
     
@@ -35,6 +37,7 @@ export const wordListService = {
     const { data, error } = await supabase
       .from('word_lists')
       .select('*')
+      .is('deleted_at', null)
       .eq('is_active', true)
       .order('created_at', { ascending: false });
     
@@ -60,6 +63,22 @@ export const wordListService = {
     return data;
   },
 
+  // Update existing word list (resets mastery)
+  async update(id, name, words) {
+    const { data, error } = await supabase
+      .from('word_lists')
+      .update({ 
+        name, 
+        words: words.map(w => ({ text: w, mastered: false }))
+      })
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  },
+
   // Toggle active status for a single word list
   async toggleActive(id, isActive) {
     const { data, error } = await supabase
@@ -73,11 +92,11 @@ export const wordListService = {
     return data;
   },
 
-  // Delete word list
+  // Soft delete word list
   async delete(id) {
     const { error } = await supabase
       .from('word_lists')
-      .delete()
+      .update({ deleted_at: new Date().toISOString() })
       .eq('id', id);
     
     if (error) throw error;
