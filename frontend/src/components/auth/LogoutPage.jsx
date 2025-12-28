@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MagicButton from '../MagicButton';
+import { useAuth } from '../../context/AuthContext';
 
 const LogoutPage = () => {
+  // Ensure we are fully logged out on mount
+  useEffect(() => {
+    localStorage.clear(); // Clear any stale data
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-xl w-full max-w-lg border-4 border-blue-300 text-center animate-fade-in">
