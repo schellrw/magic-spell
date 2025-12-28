@@ -5,6 +5,44 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+// Auth Operations
+export const authService = {
+  async signUp(email, password, username, role = 'learner') {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          username,
+          role,
+        },
+      },
+    });
+    if (error) throw error;
+    return data;
+  },
+
+  async signIn(email, password) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
+    return data;
+  },
+
+  async signOut() {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  },
+
+  async getCurrentUser() {
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error) throw error;
+    return user;
+  },
+};
+
 // Word List Operations
 export const wordListService = {
   // Get all word lists (excluding soft-deleted ones)
